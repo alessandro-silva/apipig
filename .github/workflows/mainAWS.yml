@@ -1,0 +1,53 @@
+# This is a basic workflow to help you get started with Actions
+          
+name: CI-AWS
+
+on:
+  push:
+    branches: [ enhancement ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2.1.4
+      with:
+         node-version: 14.x
+
+    # Instalar as dependências NPM/Yarn
+    - name: Install dependencies
+      run: yarn 
+    
+    # Executar a build
+    - name: Run build
+      run: yarn build 
+  
+    # Copiar código pra aws
+    - name: Copy dist to AWS
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.SSH_HOST_AWS }}
+        username: ${{ secrets.SSH_USER_AWS }}
+        port: ${{ secrets.SSH_PORT_AWS }}
+        key: ${{ secrets.SSH_KEY_AWS }}
+        source: ".,!node_modules"
+        target: "~/samasc-api"
+        
+    - name: Run production scripts
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST_AWS }}
+        username: ${{ secrets.SSH_USER_AWS }}
+        port: ${{ secrets.SSH_PORT_AWS }}
+        key: ${{ secrets.SSH_KEY_AWS }}
+        script: |
+          cd ~/samasc-api
+          yarn
+          ./node_modules/.bin/typeorm migration:run
+          pm2 restart samasc-api
+         
+
