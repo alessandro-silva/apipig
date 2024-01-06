@@ -263,5 +263,25 @@ app.delete('/videos/:videoName', (req, res) => {
   });
 });
 
+// Rota para baixar um vídeo específico pelo seu nome
+app.get('/videos/:videoName', (req, res) => {
+  // const { videoName } = req.query
+  const videoName = req.params.videoName;
+  const videoPath = path.resolve(__dirname, '..', '..', '..', '..', 'videos');
+
+
+  console.log('VIDEO', videoName)
+  const video = path.join(videoPath, videoName); // Caminho completo para o vídeo
+
+  res.download(video, (err) => {
+    if (err) {
+      console.error('Erro ao baixar o vídeo:', err);
+      res.status(500).json({ error: 'Erro ao baixar o vídeo' });
+    } else {
+      console.log('Vídeo enviado com sucesso:', videoName);
+    }
+  });
+});
+
 
 export { serverHttp, io };
