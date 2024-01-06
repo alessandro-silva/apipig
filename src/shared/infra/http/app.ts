@@ -237,16 +237,29 @@ const terminateCppProgram = () => {
 
 app.delete('/videos/:videoName', (req, res) => {
   const videoName = req.params.videoName; // Obtém o nome do vídeo dos parâmetros da URL
-  const videoPath = path.join('/videos', videoName); // Caminho completo para o vídeo
+  // const videoPath = path.join('/videos', videoName); // Caminho completo para o vídeo
+  const videoPath = path.resolve(__dirname, '..', '..', '..', '..', 'videos');
 
-  fs.unlink(videoPath, (err) => {
-    if (err) {
-      console.error('Erro ao excluir o vídeo:', err);
-      res.status(500).json({ error: 'Erro ao excluir o vídeo' });
-    } else {
-      console.log('Vídeo excluído com sucesso:', videoName);
-      res.status(200).json({ message: 'Vídeo excluído com sucesso' });
+  fs.unlink(videoPath, async (err) => {
+    const filename = path.resolve(videoPath, videoName);
+    console.log('filename', filename);
+
+    try {
+      await fs.promises.stat(filename);
+    } catch {
+      return res.json({ message: 'Video not deleted.' })
     }
+
+    await fs.promises.unlink(filename);
+
+    return res.json({ message: 'Video deleted.' })
+    // if (err) {
+    //   console.error('Erro ao excluir o vídeo:', err);
+    //   res.status(500).json({ error: 'Erro ao excluir o vídeo' });
+    // } else {
+    //   console.log('Vídeo excluído com sucesso:', videoName);
+    //   res.status(200).json({ message: 'Vídeo excluído com sucesso' });
+    // }
   });
 });
 
