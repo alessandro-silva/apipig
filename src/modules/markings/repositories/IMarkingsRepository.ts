@@ -6,5 +6,6 @@ export default interface IMarkingsRepository {
   findAllByScoreId(score_id: string): Promise<Marking[]>;
   findById(id: string): Promise<Marking | undefined>;
   create(data: ICreateMarkingDTO): Promise<Marking>;
+  createAll(data: ICreateMarkingDTO[]): Promise<Marking[]>;
   save(marking: Marking): Promise<Marking>;
 }

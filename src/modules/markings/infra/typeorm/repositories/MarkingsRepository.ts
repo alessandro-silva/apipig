@@ -41,6 +41,14 @@ class MarkingsRepository implements IMarkingsRepository {
     return marking;
   }
 
+  public async createAll(data: ICreateMarkingDTO[]): Promise<Marking[]> {
+    const markings = this.ormRepository.create(data);
+
+    await this.ormRepository.save(markings);
+
+    return markings;
+  }
+
   public async save(marking: Marking): Promise<Marking> {
     return this.ormRepository.save(marking);
   }

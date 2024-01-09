@@ -4,6 +4,7 @@ import { container } from 'tsyringe';
 import ListMarkingService from '@modules/markings/services/ListMarkingService';
 // import ShowWarningService from '@modules/markings/services/ShowWarningService';
 import CreateMarkingService from '@modules/markings/services/CreateMarkingService';
+import CreateAllMarkingService from '@modules/markings/services/CreateAllMarkingService';
 import UpdateMarkingService from '@modules/markings/services/UpdateMarkingService';
 // import ImportWarningService from '@modules/markings/services/ImportWarningService';
 
@@ -48,6 +49,16 @@ export default class MarkingsController {
     });
 
     return res.json(marking);
+  }
+
+  public async createAll(req: Request, res: Response): Promise<Response> {
+    // const { quantity, weight, score_id } = req.body;
+
+    const createAllMarking = container.resolve(CreateAllMarkingService);
+
+    const markings = await createAllMarking.execute(req.body);
+
+    return res.json(markings);
   }
 
   public async update(req: Request, res: Response): Promise<Response> {
