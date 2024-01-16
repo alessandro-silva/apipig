@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import e, { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import ListMarkingService from '@modules/markings/services/ListMarkingService';
@@ -38,7 +38,7 @@ export default class MarkingsController {
   // }
 
   public async create(req: Request, res: Response): Promise<Response> {
-    const { quantity, weight, score_id } = req.body;
+    const { quantity, weight, score_id, sequence } = req.body;
 
     const createMarking = container.resolve(CreateMarkingService);
 
@@ -46,6 +46,7 @@ export default class MarkingsController {
       quantity,
       weight,
       score_id,
+      sequence,
     });
 
     return res.json(marking);
@@ -63,7 +64,7 @@ export default class MarkingsController {
 
   public async update(req: Request, res: Response): Promise<Response> {
     const { id } = req.query;
-    const { quantity, weight, score_id } = req.body;
+    const { quantity, weight, score_id, sequence } = req.body;
 
     const updateMarking = container.resolve(UpdateMarkingService);
 
@@ -72,6 +73,7 @@ export default class MarkingsController {
       quantity,
       weight,
       score_id,
+      sequence,
     });
 
     return res.json(marking);

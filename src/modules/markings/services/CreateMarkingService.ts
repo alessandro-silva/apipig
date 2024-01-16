@@ -7,6 +7,7 @@ interface IRequest {
   quantity: number;
   weight: string;
   score_id: string;
+  sequence: number;
 }
 
 @injectable()
@@ -20,11 +21,13 @@ class CreateMarkingService {
     quantity,
     weight,
     score_id,
+    sequence,
   }: IRequest): Promise<Marking> {
     const marking = await this.markingsRepository.create({
       quantity,
       weight,
       score_id,
+      sequence,
     });
 
     return marking;

@@ -1,7 +1,10 @@
+import Score from '@modules/scores/infra/typeorm/entities/Score';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -18,7 +21,14 @@ class Marking {
   weight: string;
 
   @Column()
+  sequence: number;
+
+  @Column()
   score_id: string;
+
+  @ManyToOne(() => Score, goal => goal.markings)
+  @JoinColumn({ name: 'score_id' })
+  score: Score;
 
   @CreateDateColumn()
   created_at: Date;

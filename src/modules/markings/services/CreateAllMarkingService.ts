@@ -7,6 +7,7 @@ interface IRequest {
   quantity: number;
   weight: string;
   score_id: string;
+  sequence: number;
 }
 
 @injectable()

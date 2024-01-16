@@ -3,7 +3,7 @@ import { container } from 'tsyringe';
 // import { classToClass } from 'class-transformer';
 
 import ListScoreService from '@modules/scores/services/ListScoreService';
-// import ShowWarningService from '@modules/scores/services/ShowWarningService';
+import ShowScoreService from '@modules/scores/services/ShowScoreService';
 import CreateScoreService from '@modules/scores/services/CreateScoreService';
 import UpdateScoreService from '@modules/scores/services/UpdateScoreService';
 // import ImportWarningService from '@modules/scores/services/ImportWarningService';
@@ -13,6 +13,16 @@ export default class ScoresController {
     const listScore = container.resolve(ListScoreService);
 
     const score = await listScore.execute();
+
+    return res.json(score);
+  }
+
+  public async show(req: Request, res: Response): Promise<Response> {
+    const { id } = req.query;
+
+    const showScore = container.resolve(ShowScoreService);
+
+    const score = await showScore.execute(String(id));
 
     return res.json(score);
   }
@@ -38,13 +48,15 @@ export default class ScoresController {
   // }
 
   public async create(req: Request, res: Response): Promise<Response> {
-    const { quantity, weight } = req.body;
+    const { quantity, weight, start_date, end_date } = req.body;
 
     const createScore = container.resolve(CreateScoreService);
 
     const score = await createScore.execute({
       quantity,
       weight,
+      start_date,
+      end_date,
     });
 
     return res.json(score);
@@ -52,7 +64,7 @@ export default class ScoresController {
 
   public async update(req: Request, res: Response): Promise<Response> {
     const { id } = req.query;
-    const { quantity, weight } = req.body;
+    const { quantity, weight, start_date, end_date } = req.body;
 
     const updateScore = container.resolve(UpdateScoreService);
 
@@ -60,6 +72,8 @@ export default class ScoresController {
       id: String(id),
       quantity,
       weight,
+      start_date,
+      end_date,
     });
 
     return res.json(score);

@@ -11,6 +11,8 @@ const scoresRouter = Router();
 
 scoresRouter.get('/', scoresController.index);
 
+scoresRouter.get('/show', scoresController.show);
+
 scoresRouter.post('/', scoresController.create);
 
 // scoresRouter.post(
