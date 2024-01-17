@@ -27,6 +27,7 @@ import '@shared/container';
 const app = express();
 
 let cppProcess: any;
+let idCounting: any;
 
 // Não inserir URL de acesso prioritario
 // console.log('API CHEGOU NO CORS');
@@ -95,38 +96,61 @@ app.use((err: Error, req: Request, res: Response, _: NextFunction) => {
   });
 });
 
-app.get('/spawn', (req, res) => {
-  console.log('Rota /spawn foi acessada. Iniciando o programa C++...');
+app.get('/spawn', async (req, res) => {
 
-  // Iniciar o programa C++ como um processo separado
-  cppProcess = spawn('/home/rasp/project/darknet_test/main');
-
-  cppProcess.stdout.on('data', (data: any) => {
-    console.log(`Saída do programa C++: ${data}`);
-    // Aqui você pode enviar a saída para o cliente WebSocket, se necessário
-  });
-
-  cppProcess.stderr.on('data', (data: any) => {
-    console.error(`Erro do programa C++: ${data}`);
-    wss.clients.forEach(function each(client) {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send('program_error');
-      }
+  const data = {
+    quantity: 0,
+    weight: 0
+  }
+  try {
+    const response = await fetch("http://localhost:3333/scores", {
+      method: "POST", // or 'PUT'
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
     });
-    // Aqui você pode lidar com os erros do programa C++
-  });
 
-  cppProcess.on('close', (code: any) => {
-    console.log(`Programa C++ encerrado com código de saída ${code}`);
+    const dataFormated: {id: string} = await response.json()
 
-    wss.clients.forEach(function each(client) {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send('program_finalized');
-      }
+    idCounting = dataFormated.id
+  
+ 
+
+    console.log('Rota /spawn foi acessada. Iniciando o programa C++...');
+  
+    // Iniciar o programa C++ como um processo separado
+    cppProcess = spawn('/home/rasp/project/darknet_test/main', [idCounting]);
+  
+    cppProcess.stdout.on('data', (data: any) => {
+      console.log(`Saída do programa C++: ${data}`);
+      // Aqui você pode enviar a saída para o cliente WebSocket, se necessário
     });
-  });
+  
+    cppProcess.stderr.on('data', (data: any) => {
+      console.error(`Erro do programa C++: ${data}`);
+      wss.clients.forEach(function each(client) {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send('program_error');
+        }
+      });
+      // Aqui você pode lidar com os erros do programa C++
+    });
+  
+    cppProcess.on('close', (code: any) => {
+      console.log(`Programa C++ encerrado com código de saída ${code}`);
+  
+      wss.clients.forEach(function each(client) {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send('program_finalized');
+        }
+      });
+    });
 
-  res.status(200).json({ message: 'Programa C++ iniciado' });
+    res.status(200).json({ message: 'Programa C++ iniciado' });
+  } catch(e) {
+    res.status(500).json({ message: `Problemas ao executar programa. ERROR: ${e}` });
+  } 
 });
 
 
@@ -197,8 +221,9 @@ wss.on('connection', function connection(ws) {
 
     // Broadcast da mensagem recebida para todos os clientes conectados
     wss.clients.forEach(function each(client) {
-      if (client !== ws && client.readyState === WebSocket.OPEN) {
-        client.send(msgString);
+      if (client !== ws && client.readyState === WebSocket.OPEN && idCounting) {
+        const formatedData = `${msgString} ${idCounting}`
+        client.send(formatedData);
       }
     });
   });
