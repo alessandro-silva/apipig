@@ -2,8 +2,8 @@ import { injectable, inject } from 'tsyringe';
 import { differenceInMinutes, minutesToHours } from 'date-fns';
 
 import IScoresRepository from '../repositories/IScoresRepository';
-import Score from '../infra/typeorm/entities/Score';
 import AppError from '@shared/errors/AppError';
+import { ScoreMap } from '../mapper/ScoreMap';
 
 @injectable()
 class ShowScoreService {
@@ -24,7 +24,9 @@ class ShowScoreService {
     const hours = Math.floor(duration / 60);
     const minutes = duration % 60;
 
-    return {...score, duration: { hours,minutes } };
+    const scoreMap = ScoreMap.toDTO(score);
+
+    return {...scoreMap, duration: { hours,minutes } };
   }
 }
 
