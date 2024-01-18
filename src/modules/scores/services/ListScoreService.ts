@@ -1,7 +1,8 @@
 import { injectable, inject } from 'tsyringe';
 
 import IScoresRepository from '../repositories/IScoresRepository';
-import Score from '../infra/typeorm/entities/Score';
+import { ScoreMap } from '../mapper/ScoreMap';
+import IScoreResponseDTO from '../dtos/IScoreResponseDTO';
 
 @injectable()
 class ListScoreService {
@@ -10,10 +11,12 @@ class ListScoreService {
     private scoresRepository: IScoresRepository,
   ) {}
 
-  public async execute(): Promise<Score[]> {
+  public async execute(): Promise<IScoreResponseDTO[]> {
     const scores = await this.scoresRepository.findAll();
 
-    return scores;
+    const scoresMap = scores.map(score => { return ScoreMap.toDTO(score) })
+
+    return scoresMap;
   }
 }
 

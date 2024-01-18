@@ -6,7 +6,7 @@ import ListScoreService from '@modules/scores/services/ListScoreService';
 import ShowScoreService from '@modules/scores/services/ShowScoreService';
 import CreateScoreService from '@modules/scores/services/CreateScoreService';
 import UpdateScoreService from '@modules/scores/services/UpdateScoreService';
-// import ImportWarningService from '@modules/scores/services/ImportWarningService';
+import UploadScoreService from '@modules/scores/services/UploadScoreService';
 
 export default class ScoresController {
   public async index(req: Request, res: Response): Promise<Response> {
@@ -74,6 +74,21 @@ export default class ScoresController {
       weight,
       start_date,
       end_date,
+    });
+
+    return res.json(score);
+  }
+
+  public async uploadFile(req: Request, res: Response): Promise<Response> {
+    const { id } = req.query;
+
+    const file = req.file?.filename;
+
+    const uploadScore = container.resolve(UploadScoreService);
+
+    const score = await uploadScore.execute({
+      id: String(id),
+      file,
     });
 
     return res.json(score);
