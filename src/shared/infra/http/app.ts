@@ -97,10 +97,11 @@ app.use((err: Error, req: Request, res: Response, _: NextFunction) => {
 });
 
 app.get('/spawn', async (req, res) => {
-
+  const { cfg, names, weights, saveVideo, roteViewVideo, mountVideo } = req.query;
   const data = {
     quantity: 0,
-    weight: 0
+    weight: 0,
+    start_date: new Date(),
   }
   try {
     const response = await fetch("http://localhost:3333/scores", {
@@ -111,22 +112,20 @@ app.get('/spawn', async (req, res) => {
       body: JSON.stringify(data),
     });
 
-    const dataFormated: {id: string} = await response.json()
+    const dataFormated: { id: string } = await response.json()
 
     idCounting = dataFormated.id
-  
- 
 
     console.log('Rota /spawn foi acessada. Iniciando o programa C++...');
-  
+
     // Iniciar o programa C++ como um processo separado
-    cppProcess = spawn('/home/rasp/project/darknet_test/main', [idCounting]);
-  
+    cppProcess = spawn('/home/rasp/project/darknet_test/main', [idCounting, cfg, names, weights, saveVideo, roteViewVideo, mountVideo]);
+
     cppProcess.stdout.on('data', (data: any) => {
       console.log(`Saída do programa C++: ${data}`);
       // Aqui você pode enviar a saída para o cliente WebSocket, se necessário
     });
-  
+
     cppProcess.stderr.on('data', (data: any) => {
       console.error(`Erro do programa C++: ${data}`);
       wss.clients.forEach(function each(client) {
@@ -136,10 +135,10 @@ app.get('/spawn', async (req, res) => {
       });
       // Aqui você pode lidar com os erros do programa C++
     });
-  
+
     cppProcess.on('close', (code: any) => {
       console.log(`Programa C++ encerrado com código de saída ${code}`);
-  
+
       wss.clients.forEach(function each(client) {
         if (client.readyState === WebSocket.OPEN) {
           client.send('program_finalized');
@@ -148,9 +147,9 @@ app.get('/spawn', async (req, res) => {
     });
 
     res.status(200).json({ message: 'Programa C++ iniciado' });
-  } catch(e) {
+  } catch (e) {
     res.status(500).json({ message: `Problemas ao executar programa. ERROR: ${e}` });
-  } 
+  }
 });
 
 
@@ -209,7 +208,7 @@ app.get('/videos', (req, res) => {
 wss.on('connection', function connection(ws) {
   console.log('Cliente conectado!');
 
-  ws.on('message', function incoming(message:any) {
+  ws.on('message', function incoming(message: any) {
     const msgString = Buffer.from(message).toString();
     console.log('Mensagem recebida do cliente:', msgString);
 
