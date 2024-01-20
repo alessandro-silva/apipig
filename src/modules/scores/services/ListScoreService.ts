@@ -9,14 +9,18 @@ class ListScoreService {
   constructor(
     @inject('ScoresRepository')
     private scoresRepository: IScoresRepository,
-  ) {}
+  ) { }
 
   public async execute(): Promise<IScoreResponseDTO[]> {
     const scores = await this.scoresRepository.findAll();
 
     const scoresMap = scores.map(score => { return ScoreMap.toDTO(score) })
 
-    return scoresMap;
+    const scoresOrderByStartDate = scoresMap.sort((a, b) =>
+      new Date(b.start_date).getTime() - new Date(a.start_date).getTime(),
+    );
+
+    return scoresOrderByStartDate;
   }
 }
 
