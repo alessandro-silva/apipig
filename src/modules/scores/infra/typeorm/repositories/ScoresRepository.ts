@@ -26,6 +26,14 @@ class ScoresRepository implements IScoresRepository {
     return score;
   }
 
+  public async findByStatus(status: boolean): Promise<Score[]> {
+    const scores = await this.ormRepository.find({
+      where: { status },
+    });
+
+    return scores;
+  }
+
   public async create(data: ICreateScoreDTO): Promise<Score> {
     const score = this.ormRepository.create(data);
 

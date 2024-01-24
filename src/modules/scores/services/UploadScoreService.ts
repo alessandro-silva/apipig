@@ -1,4 +1,5 @@
 import { injectable, inject } from 'tsyringe';
+import fetch from 'node-fetch';
 
 import AppError from '@shared/errors/AppError';
 import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
@@ -6,6 +7,7 @@ import IScoresRepository from '../repositories/IScoresRepository';
 
 import IScoreResponseDTO from '../dtos/IScoreResponseDTO';
 import { ScoreMap } from '../mapper/ScoreMap';
+import api from '@config/api';
 
 interface IRequest {
   id: string;
@@ -20,9 +22,9 @@ class UploadScoreService {
 
     @inject('StorageProvider')
     private storageProvider: IStorageProvider,
-  ) {}
+  ) { }
 
-  public async execute({ file, id }: IRequest): Promise<IScoreResponseDTO> {
+  public async execute({ file, id }: IRequest): Promise<any> {
     const score = await this.scoresRepository.findById(id);
 
     if (!score) {
@@ -40,6 +42,23 @@ class UploadScoreService {
     }
 
     await this.scoresRepository.save(score);
+
+    const noUploadScores = await this.scoresRepository.findByStatus(false);
+
+    if (noUploadScores.length === 0) {
+      return { score: ScoreMap.toDTO(score), upload: '0 scores' };
+    }
+
+    noUploadScores.forEach(async score => {
+      score.status = true;
+
+      await this.scoresRepository.save(score);
+    });
+
+    fetch(`${api.url}/scores/createAll`, {
+      method: "POST",
+      body: JSON.stringify(noUploadScores),
+    });
 
     return ScoreMap.toDTO(score);
   }

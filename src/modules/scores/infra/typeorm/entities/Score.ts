@@ -27,6 +27,9 @@ class Score {
   @Column()
   end_date: Date;
 
+  @Column()
+  status: boolean;
+
   @OneToMany(() => Marking, marking => marking.score, {
     eager: true,
   })
