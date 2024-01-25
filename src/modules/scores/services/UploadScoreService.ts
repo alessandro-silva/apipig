@@ -1,67 +1,66 @@
-import { injectable, inject } from 'tsyringe';
-import fetch from 'node-fetch';
+// import { injectable, inject } from 'tsyringe';
+// import fetch from 'node-fetch';
 
-import AppError from '@shared/errors/AppError';
-import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
-import IScoresRepository from '../repositories/IScoresRepository';
+// import AppError from '@shared/errors/AppError';
+// import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
+// import IScoresRepository from '../repositories/IScoresRepository';
 
-import IScoreResponseDTO from '../dtos/IScoreResponseDTO';
-import { ScoreMap } from '../mapper/ScoreMap';
-import api from '@config/api';
+// import { ScoreMap } from '../mapper/ScoreMap';
+// import api from '@config/api';
 
-interface IRequest {
-  id: string;
-  file?: string;
-}
+// interface IRequest {
+//   id: string;
+//   file?: string;
+// }
 
-@injectable()
-class UploadScoreService {
-  constructor(
-    @inject('ScoresRepository')
-    private scoresRepository: IScoresRepository,
+// @injectable()
+// class UploadScoreService {
+//   constructor(
+//     @inject('ScoresRepository')
+//     private scoresRepository: IScoresRepository,
 
-    @inject('StorageProvider')
-    private storageProvider: IStorageProvider,
-  ) { }
+//     @inject('StorageProvider')
+//     private storageProvider: IStorageProvider,
+//   ) { }
 
-  public async execute({ file, id }: IRequest): Promise<any> {
-    const score = await this.scoresRepository.findById(id);
+//   public async execute({ file, id }: IRequest): Promise<any> {
+//     const score = await this.scoresRepository.findById(id);
 
-    if (!score) {
-      throw new AppError('Score does not exists.');
-    }
+//     if (!score) {
+//       throw new AppError('Score does not exists.');
+//     }
 
-    if (file) {
-      if (score.file) {
-        await this.storageProvider.delete(score.file, 'scores/file');
-      }
+//     if (file) {
+//       if (score.file) {
+//         await this.storageProvider.delete(score.file, 'scores/file');
+//       }
 
-      await this.storageProvider.save(file, 'scores/file');
+//       await this.storageProvider.save(file, 'scores/file');
 
-      score.file = file;
-    }
+//       score.file = file;
+//     }
 
-    await this.scoresRepository.save(score);
+//     await this.scoresRepository.save(score);
 
-    const noUploadScores = await this.scoresRepository.findByStatus(false);
+//     const noUploadScores = await this.scoresRepository.findByStatus(false);
 
-    if (noUploadScores.length === 0) {
-      return { score: ScoreMap.toDTO(score), upload: '0 scores' };
-    }
+//     if (noUploadScores.length === 0) {
+//       return { score: ScoreMap.toDTO(score), upload: '0 scores' };
+//     }
 
-    noUploadScores.forEach(async score => {
-      score.status = true;
+//     noUploadScores.forEach(async score => {
+//       score.status = true;
 
-      await this.scoresRepository.save(score);
-    });
+//       await this.scoresRepository.save(score);
+//     });
 
-    fetch(`${api.url}/scores/createAll`, {
-      method: "POST",
-      body: JSON.stringify(noUploadScores),
-    });
+//     fetch(`${api.url}/scores/createAll`, {
+//       method: "POST",
+//       body: JSON.stringify(noUploadScores),
+//     });
 
-    return ScoreMap.toDTO(score);
-  }
-}
+//     return ScoreMap.toDTO(score);
+//   }
+// }
 
-export default UploadScoreService;
+// export default UploadScoreService;

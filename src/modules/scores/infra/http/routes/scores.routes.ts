@@ -15,6 +15,8 @@ scoresRouter.get('/show', scoresController.show);
 
 scoresRouter.post('/', scoresController.create);
 
+scoresRouter.post('/createAll', scoresController.createAll);
+
 // scoresRouter.post(
 //   '/import',
 //   upload.single('file'),
@@ -23,10 +25,10 @@ scoresRouter.post('/', scoresController.create);
 
 scoresRouter.put('/', scoresController.update);
 
-scoresRouter.patch(
-  '/upload',
-  upload.single('file'),
-  scoresController.uploadFile,
-);
+// scoresRouter.patch(
+//   '/upload',
+//   upload.single('file'),
+//   scoresController.uploadFile,
+// );
 
 export default scoresRouter;

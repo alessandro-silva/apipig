@@ -5,6 +5,18 @@ import ICreateScoreDTO from '@modules/scores/dtos/ICreateScoreDTO';
 
 import Score from '@modules/scores/infra/typeorm/entities/Score';
 
+interface ICreateAll {
+  id: string;
+  quantity: number;
+  weight: string;
+  file: string;
+  status: boolean;
+  start_date: Date;
+  end_date: Date;
+  created_at: Date;
+  updated_at: Date;
+}
+
 class ScoresRepository implements IScoresRepository {
   private ormRepository: Repository<Score>;
 
@@ -34,12 +46,20 @@ class ScoresRepository implements IScoresRepository {
     return scores;
   }
 
-  public async create(data: ICreateScoreDTO): Promise<Score> {
+  public async create(data: ICreateAll): Promise<Score> {
     const score = this.ormRepository.create(data);
 
     await this.ormRepository.save(score);
 
     return score;
+  }
+
+  public async createAll(data: ICreateAll[]): Promise<Score[]> {
+    const scores = this.ormRepository.create(data);
+
+    await this.ormRepository.save(scores);
+
+    return scores;
   }
 
   public async save(score: Score): Promise<Score> {

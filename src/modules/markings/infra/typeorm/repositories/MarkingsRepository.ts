@@ -33,7 +33,7 @@ class MarkingsRepository implements IMarkingsRepository {
     return marking;
   }
 
-  public async create(data: ICreateMarkingDTO): Promise<Marking> {
+  public async create(data: Marking): Promise<Marking> {
     const marking = this.ormRepository.create(data);
 
     await this.ormRepository.save(marking);
@@ -41,7 +41,7 @@ class MarkingsRepository implements IMarkingsRepository {
     return marking;
   }
 
-  public async createAll(data: ICreateMarkingDTO[]): Promise<Marking[]> {
+  public async createAll(data: Marking[]): Promise<Marking[]> {
     const markings = this.ormRepository.create(data);
 
     await this.ormRepository.save(markings);
