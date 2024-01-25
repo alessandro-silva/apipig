@@ -6,9 +6,9 @@ import UsersController from '../controllers/UsersController';
 const usersController = new UsersController();
 const usersRouter = Router();
 
-usersRouter.use(ensureAuthenticated);
+// usersRouter.use(ensureAuthenticated);
 
-usersRouter.get('/', usersController.index);
+usersRouter.get('/',ensureAuthenticated, usersController.index);
 
 // usersRouter.get('/show', usersController.show);
 
