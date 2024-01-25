@@ -1,13 +1,13 @@
 import { Router } from 'express';
-import multer from 'multer';
 
-import uploadConfig from '@config/upload';
 import ScoresController from '../controllers/ScoresController';
+import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
 
 const scoresController = new ScoresController();
 
 const scoresRouter = Router();
-const upload = multer(uploadConfig);
+
+scoresRouter.use(ensureAuthenticated);
 
 scoresRouter.get('/', scoresController.index);
 

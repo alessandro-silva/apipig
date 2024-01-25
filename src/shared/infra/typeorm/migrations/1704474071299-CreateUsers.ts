@@ -18,15 +18,11 @@ export default class CreateUsers1704474071299 implements MigrationInterface {
             type: 'varchar',
           },
           {
-            name: 'nickname',
+            name: 'cpf',
             type: 'varchar',
           },
           {
-            name: 'password',
-            type: 'varchar',
-          },
-          {
-            name: 'tag',
+            name: 'internal_code',
             type: 'varchar',
           },
           {

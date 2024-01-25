@@ -1,10 +1,13 @@
 import { Router } from 'express';
 
 import MarkingsController from '../controllers/MarkingsController';
+import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
 
 const markingsController = new MarkingsController();
 
 const markingsRouter = Router();
+
+markingsRouter.use(ensureAuthenticated);
 
 markingsRouter.get('/', markingsController.index);
 
