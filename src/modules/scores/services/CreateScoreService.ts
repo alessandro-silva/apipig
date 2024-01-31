@@ -4,6 +4,7 @@ import { uuid } from 'uuidv4';
 import IScoresRepository from '../repositories/IScoresRepository';
 import Score from '../infra/typeorm/entities/Score';
 import IMarkingsRepository from '@modules/markings/repositories/IMarkingsRepository';
+import AppError from '@shared/errors/AppError';
 
 // interface IRequest {
 //   id: string;
@@ -28,6 +29,12 @@ class CreateScoreService {
   ) {}
 
   public async execute(data: Score): Promise<Score> {
+    const scoreExistent = await this.scoresRepository.findById(data.id);
+
+    if (scoreExistent) {
+      throw new AppError('Score does not exists.');
+    }
+
     const score = await this.scoresRepository.create(data);
 
     // const markings = await this.markingsRepository.findAllByScoreId(score.id);
