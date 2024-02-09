@@ -5,9 +5,9 @@ import SessiosController from '../controllers/SessionsController';
 
 const sessionsController = new SessiosController();
 
-const sessionsRouter = Router();
+const sessionsUsersRouter = Router();
 
-sessionsRouter.post(
+sessionsUsersRouter.post(
   '/',
   // celebrate({
   //   [Segments.BODY]: {
@@ -17,4 +17,4 @@ sessionsRouter.post(
   sessionsController.create,
 );
 
-export default sessionsRouter;
+export default sessionsUsersRouter;

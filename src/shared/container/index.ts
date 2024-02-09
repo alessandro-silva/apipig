@@ -14,6 +14,12 @@ import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepo
 import IUsersTokensRepository from '@modules/users/repositories/IUsersTokensRepository';
 import UsersTokensRepository from '@modules/users/infra/typeorm/repositories/UsersTokensRepository';
 
+import IProducersRepository from '@modules/producers/repositories/IProducersRepository';
+import ProducersRepository from '@modules/producers/infra/typeorm/repositories/ProducersRepository';
+
+import IProducersTokensRepository from '@modules/producers/repositories/IProducersTokensRepository';
+import ProducersTokensRepository from '@modules/producers/infra/typeorm/repositories/ProducersTokensRepository';
+
 container.registerSingleton<IScoresRepository>(
   'ScoresRepository',
   ScoresRepository,
@@ -32,4 +38,14 @@ container.registerSingleton<IUsersRepository>(
 container.registerSingleton<IUsersTokensRepository>(
   'UsersTokensRepository',
   UsersTokensRepository,
+);
+
+container.registerSingleton<IProducersRepository>(
+  'ProducersRepository',
+  ProducersRepository,
+);
+
+container.registerSingleton<IProducersTokensRepository>(
+  'ProducersTokensRepository',
+  ProducersTokensRepository,
 );

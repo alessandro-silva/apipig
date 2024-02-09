@@ -3,6 +3,7 @@ import { verify } from 'jsonwebtoken';
 
 import authConfig from '@config/auth';
 import UsersRepository from '../../typeorm/repositories/UsersRepository';
+import ProducersRepository from '@modules/producers/infra/typeorm/repositories/ProducersRepository';
 
 interface ITokenPayload {
   iat: number;
@@ -43,22 +44,32 @@ export default async function ensureAuthenticated(
     ) as ITokenPayload;
 
     const usersRepository = new UsersRepository();
+    const producersRepository = new ProducersRepository();
 
     const user = await usersRepository.findById(user_id);
+    const producer = await producersRepository.findById(user_id);
 
-    if (!user) {
-      return response.status(401).json({
-        error: true,
-        code: 'user.undefined',
-        message: 'Use does not exists.',
-      });
+    if (user) {
+      request.user = {
+        id: user_id,
+      };
+
+      return next();
     }
 
-    request.user = {
-      id: user_id,
-    };
+    if (producer) {
+      request.producer = {
+        id: user_id,
+      };
 
-    return next();
+      return next();
+    }
+
+    return response.status(401).json({
+      error: true,
+      code: 'user.undefined',
+      message: 'Use does not exists.',
+    });
   } catch (err) {
     if (String(err) === 'JsonWebTokenError: jwt malformed')
       return response.status(401).json({
