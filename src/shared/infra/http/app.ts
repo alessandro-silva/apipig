@@ -8,10 +8,8 @@ import http from 'http';
 import cors from 'cors';
 import fs from 'fs';
 import path from 'path';
-import bodyParser from 'body-parser';
 import WebSocket from 'ws';
 import 'express-async-errors';
-import { errors } from 'celebrate';
 import { Server } from 'socket.io';
 import { spawn } from 'child_process';
 
@@ -33,7 +31,7 @@ let idCounting: any;
 // console.log('API CHEGOU NO CORS');
 // app.use(cors());
 
-app.use(bodyParser.json({ limit: '50mb' }));
+// app.use(bodyParser.json({ limit: '50mb' }));
 
 app.use(
   cors({
@@ -78,7 +76,7 @@ app.use(express.json());
 // app.use('/document', express.static(`${upload.tmpFolder}/car/document`));
 // app.use(rateLimiter);
 app.use(routes);
-app.use(errors());
+// app.use(errors());
 
 app.use((err: Error, req: Request, res: Response, _: NextFunction) => {
   if (err instanceof AppError) {
