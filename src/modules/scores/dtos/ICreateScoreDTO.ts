@@ -4,4 +4,5 @@ export default interface ICreateScoreDTO {
   weight: string;
   start_date: Date;
   end_date: Date;
+  producer_id: string;
 }

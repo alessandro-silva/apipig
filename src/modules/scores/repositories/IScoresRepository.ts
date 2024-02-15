@@ -16,6 +16,7 @@ interface ICreateAll {
 export default interface IScoresRepository {
   findAll(): Promise<Score[]>;
   findById(id: string): Promise<Score | undefined>;
+  findByProducerId(producer_id: string): Promise<Score[]>;
   findByStatus(status: boolean): Promise<Score[]>;
   create(data: ICreateAll): Promise<Score>;
   createAll(data: ICreateAll[]): Promise<Score[]>;

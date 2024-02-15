@@ -15,6 +15,7 @@ export class ScoreMap {
     file,
     file_url,
     markings,
+    producer_id,
   }: Score): IScoreResponseDTO {
     const score = classToClass({
       id,
@@ -26,6 +27,7 @@ export class ScoreMap {
       file,
       file_url,
       markings,
+      producer_id,
     });
 
     return score;

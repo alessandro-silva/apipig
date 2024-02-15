@@ -13,6 +13,7 @@ interface IRequest {
   end_date: Date;
   created_at: Date;
   updated_at: Date;
+  producer_id: string;
 }
 
 @injectable()

@@ -30,6 +30,9 @@ class Score {
   @Column()
   status: boolean;
 
+  @Column()
+  producer_id: string;
+
   @OneToMany(() => Marking, marking => marking.score, {
     eager: true,
   })

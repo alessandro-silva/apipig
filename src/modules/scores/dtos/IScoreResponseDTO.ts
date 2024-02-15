@@ -5,4 +5,5 @@ export default interface IScoreResponseDTO {
   end_date: Date;
   status: boolean;
   file_url(): string;
+  producer_id: string;
 }

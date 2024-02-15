@@ -32,7 +32,7 @@ class CreateScoreService {
     const scoreExistent = await this.scoresRepository.findById(data.id);
 
     if (scoreExistent) {
-      throw new AppError('Score does not exists.');
+      throw new AppError('Score already exists.');
     }
 
     const score = await this.scoresRepository.create(data);

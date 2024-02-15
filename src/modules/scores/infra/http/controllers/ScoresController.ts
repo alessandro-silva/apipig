@@ -19,11 +19,14 @@ export default class ScoresController {
   }
 
   public async show(req: Request, res: Response): Promise<Response> {
-    const { id } = req.query;
+    const { id, producer_id } = req.query;
 
     const showScore = container.resolve(ShowScoreService);
 
-    const score = await showScore.execute(String(id));
+    const score = await showScore.execute({
+      id: id ? String(id) : undefined,
+      producer_id: producer_id ? String(producer_id) : undefined,
+    });
 
     return res.json(score);
   }
