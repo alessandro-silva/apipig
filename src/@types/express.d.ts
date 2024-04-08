@@ -7,5 +7,8 @@ declare namespace Express {
     producer: {
       id: string;
     };
+    farm: {
+      id: string;
+    };
   }
 }

@@ -4,6 +4,7 @@ import { verify } from 'jsonwebtoken';
 import authConfig from '@config/auth';
 import UsersRepository from '../../typeorm/repositories/UsersRepository';
 import ProducersRepository from '@modules/producers/infra/typeorm/repositories/ProducersRepository';
+import FarmsRepository from '@modules/farms/infra/typeorm/repositories/FarmsRepository';
 
 interface ITokenPayload {
   iat: number;
@@ -45,9 +46,11 @@ export default async function ensureAuthenticated(
 
     const usersRepository = new UsersRepository();
     const producersRepository = new ProducersRepository();
+    const farmsRepository = new FarmsRepository();
 
     const user = await usersRepository.findById(user_id);
     const producer = await producersRepository.findById(user_id);
+    const farm = await farmsRepository.findById(user_id);
 
     if (user) {
       request.user = {
@@ -59,6 +62,14 @@ export default async function ensureAuthenticated(
 
     if (producer) {
       request.producer = {
+        id: user_id,
+      };
+
+      return next();
+    }
+
+    if (farm) {
+      request.farm = {
         id: user_id,
       };
 

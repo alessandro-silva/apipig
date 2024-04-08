@@ -20,6 +20,12 @@ import ProducersRepository from '@modules/producers/infra/typeorm/repositories/P
 import IProducersTokensRepository from '@modules/producers/repositories/IProducersTokensRepository';
 import ProducersTokensRepository from '@modules/producers/infra/typeorm/repositories/ProducersTokensRepository';
 
+import IFarmsRepository from '@modules/farms/repositories/IFarmsRepository';
+import FarmsRepository from '@modules/farms/infra/typeorm/repositories/FarmsRepository';
+
+import IFarmsTokensRepository from '@modules/farms/repositories/IFarmsTokensRepository';
+import FarmsTokensRepository from '@modules/farms/infra/typeorm/repositories/FarmsTokensRepository';
+
 container.registerSingleton<IScoresRepository>(
   'ScoresRepository',
   ScoresRepository,
@@ -48,4 +54,14 @@ container.registerSingleton<IProducersRepository>(
 container.registerSingleton<IProducersTokensRepository>(
   'ProducersTokensRepository',
   ProducersTokensRepository,
+);
+
+container.registerSingleton<IFarmsRepository>(
+  'FarmsRepository',
+  FarmsRepository,
+);
+
+container.registerSingleton<IFarmsTokensRepository>(
+  'FarmsTokensRepository',
+  FarmsTokensRepository,
 );
