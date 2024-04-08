@@ -10,6 +10,7 @@ import sessionsProducersRouter from '@modules/producers/infra/http/routes/sessio
 import refreshProducerRouter from '@modules/producers/infra/http/routes/refreshToken.routes';
 import farmsRouter from '@modules/farms/infra/http/routes/farms.routes';
 import sessionsFarmsRouter from '@modules/farms/infra/http/routes/sessions.routes';
+import refreshFarmsRouter from '@modules/farms/infra/http/routes/refreshToken.routes';
 
 const routes = Router();
 
@@ -23,5 +24,6 @@ routes.use('/sessions-producers', sessionsProducersRouter);
 routes.use('/refresh-producer', refreshProducerRouter);
 routes.use('/farms', farmsRouter);
 routes.use('/sessions-farms', sessionsFarmsRouter);
+routes.use('/refresh-farm', refreshFarmsRouter);
 
 export default routes;
