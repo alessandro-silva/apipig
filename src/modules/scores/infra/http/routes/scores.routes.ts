@@ -10,12 +10,11 @@ const scoresRouter = Router();
 scoresRouter.use(ensureAuthenticated);
 
 scoresRouter.get('/', scoresController.index);
-
 scoresRouter.get('/show', scoresController.show);
-
 scoresRouter.post('/', scoresController.create);
-
 scoresRouter.post('/createAll', scoresController.createAll);
+scoresRouter.put('/', scoresController.update);
+scoresRouter.delete('/', scoresController.delete);
 
 // scoresRouter.post(
 //   '/import',
@@ -23,7 +22,6 @@ scoresRouter.post('/createAll', scoresController.createAll);
 //   scoresController.import,
 // );
 
-scoresRouter.put('/', scoresController.update);
 
 // scoresRouter.patch(
 //   '/upload',

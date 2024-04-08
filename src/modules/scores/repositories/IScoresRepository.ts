@@ -1,5 +1,5 @@
 import Score from '../infra/typeorm/entities/Score';
-import ICreateScoreDTO from '../dtos/ICreateScoreDTO';
+import { DeleteResult } from 'typeorm';
 
 interface ICreateAll {
   id: string;
@@ -21,4 +21,5 @@ export default interface IScoresRepository {
   create(data: ICreateAll): Promise<Score>;
   createAll(data: ICreateAll[]): Promise<Score[]>;
   save(score: Score): Promise<Score>;
+  delete(id: string): Promise<DeleteResult>;
 }

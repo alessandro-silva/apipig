@@ -7,6 +7,7 @@ import ShowScoreService from '@modules/scores/services/ShowScoreService';
 import CreateScoreService from '@modules/scores/services/CreateScoreService';
 import CreateAllScoreService from '@modules/scores/services/CreateAllScoreService';
 import UpdateScoreService from '@modules/scores/services/UpdateScoreService';
+import DeleteScoreService from '@modules/scores/services/DeleteScoreService';
 // import UploadScoreService from '@modules/scores/services/UploadScoreService';
 
 export default class ScoresController {
@@ -92,6 +93,16 @@ export default class ScoresController {
       start_date,
       end_date,
     });
+
+    return res.json(score);
+  }
+
+  public async delete(req: Request, res: Response): Promise<Response> {
+    const { id } = req.query;
+
+    const deleteScore = container.resolve(DeleteScoreService);
+
+    const score = await deleteScore.execute(String(id));
 
     return res.json(score);
   }
