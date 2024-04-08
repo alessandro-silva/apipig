@@ -1,14 +1,19 @@
-import Marking from '@modules/markings/infra/typeorm/entities/Marking';
 import { Expose } from 'class-transformer';
+
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   JoinTable,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
+import Marking from '@modules/markings/infra/typeorm/entities/Marking';
+import Farm from '@modules/farms/infra/typeorm/entities/Farm';
 
 @Entity('scores')
 class Score {
@@ -29,6 +34,19 @@ class Score {
 
   @Column()
   status: boolean;
+
+  @Column()
+  type: string;
+
+  @Column()
+  nfe: string;
+
+  @Column()
+  farm_id: string;
+
+  @ManyToOne(() => Farm, { eager: true })
+  @JoinColumn({ name: 'farm_id' })
+  farm: Farm;
 
   @Column()
   producer_id: string;

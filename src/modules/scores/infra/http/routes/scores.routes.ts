@@ -22,7 +22,6 @@ scoresRouter.delete('/', scoresController.delete);
 //   scoresController.import,
 // );
 
-
 // scoresRouter.patch(
 //   '/upload',
 //   upload.single('file'),

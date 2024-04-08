@@ -6,4 +6,7 @@ export default interface IScoreResponseDTO {
   status: boolean;
   file_url(): string;
   producer_id: string;
+  type: string;
+  nfe: string;
+  farm_id: string;
 }

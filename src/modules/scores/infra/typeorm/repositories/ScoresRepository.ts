@@ -15,6 +15,10 @@ interface ICreateAll {
   end_date: Date;
   created_at: Date;
   updated_at: Date;
+  producer_id: string;
+  type: string;
+  nfe: string;
+  farm_id: string;
 }
 
 class ScoresRepository implements IScoresRepository {
