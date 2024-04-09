@@ -18,6 +18,9 @@ class Producer {
   cpf: string;
 
   @Column()
+  email: string;
+
+  @Column()
   internal_code: string;
 
   @CreateDateColumn()

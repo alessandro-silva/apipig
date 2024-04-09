@@ -5,18 +5,28 @@ import IScoresRepository from '../repositories/IScoresRepository';
 import Score from '../infra/typeorm/entities/Score';
 import IMarkingsRepository from '@modules/markings/repositories/IMarkingsRepository';
 import AppError from '@shared/errors/AppError';
+import Marking from '@modules/markings/infra/typeorm/entities/Marking';
 
-// interface IRequest {
-//   id: string;
-//   quantity: number;
-//   weight: string;
-//   file: string;
-//   status: boolean;
-//   start_date: Date;
-//   end_date: Date;
-//   created_at: Date;
-//   updated_at: Date;
-// }
+interface ICreateAll {
+  id: string;
+  quantity: number;
+  weight: string;
+  file: string;
+  status: boolean;
+  start_date: Date;
+  end_date: Date;
+  created_at: Date;
+  updated_at: Date;
+  type: string;
+  nfe: string;
+  markings?: Marking[];
+  farm_id_sender?: string;
+  farm_id_received?: string;
+  farm_id_internal?: string;
+  producer_id_sender?: string;
+  producer_id_received?: string;
+  producer_id_internal?: string;
+}
 
 @injectable()
 class CreateScoreService {
@@ -28,7 +38,7 @@ class CreateScoreService {
     private markingsRepository: IMarkingsRepository,
   ) {}
 
-  public async execute(data: Score): Promise<Score> {
+  public async execute(data: ICreateAll): Promise<Score> {
     const scoreExistent = await this.scoresRepository.findById(data.id);
 
     if (scoreExistent) {

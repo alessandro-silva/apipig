@@ -13,5 +13,6 @@ farmsRouter.get('/', farmsController.index);
 farmsRouter.get('/show', farmsController.show);
 farmsRouter.post('/', farmsController.create);
 farmsRouter.put('/', farmsController.update);
+farmsRouter.delete('/', farmsController.delete);
 
 export default farmsRouter;

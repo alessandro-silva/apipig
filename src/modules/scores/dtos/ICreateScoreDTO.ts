@@ -6,6 +6,10 @@ export default interface ICreateScoreDTO {
   end_date: Date;
   type: string;
   nfe?: string;
-  producer_id?: string;
-  farm_id: string;
+  farm_id_sender?: string;
+  farm_id_received?: string;
+  farm_id_internal?: string;
+  producer_id_sender?: string;
+  producer_id_received?: string;
+  producer_id_internal?: string;
 }

@@ -1,4 +1,4 @@
-import { getRepository, Repository } from 'typeorm';
+import { DeleteResult, getRepository, Repository } from 'typeorm';
 
 import IFarmsRepository from '@modules/farms/repositories/IFarmsRepository';
 import ICreateFarmDTO from '@modules/farms/dtos/ICreateFarmDTO';
@@ -59,6 +59,10 @@ class FarmsRepository implements IFarmsRepository {
 
   public async save(farm: Farm): Promise<Farm> {
     return this.ormRepository.save(farm);
+  }
+
+  public async delete(id: string): Promise<DeleteResult> {
+    return this.ormRepository.delete({ id });
   }
 }
 

@@ -6,19 +6,23 @@ import ICreateScoreDTO from '@modules/scores/dtos/ICreateScoreDTO';
 import Score from '@modules/scores/infra/typeorm/entities/Score';
 
 interface ICreateAll {
-  id: string;
-  quantity: number;
-  weight: string;
-  file: string;
-  status: boolean;
-  start_date: Date;
-  end_date: Date;
-  created_at: Date;
-  updated_at: Date;
-  producer_id: string;
-  type: string;
-  nfe: string;
-  farm_id: string;
+  id?: string;
+  quantity?: number;
+  weight?: string;
+  file?: string;
+  status?: boolean;
+  start_date?: Date;
+  end_date?: Date;
+  created_at?: Date;
+  updated_at?: Date;
+  type?: string;
+  nfe?: string;
+  farm_id_sender?: string;
+  farm_id_received?: string;
+  farm_id_internal?: string;
+  producer_id_sender?: string;
+  producer_id_received?: string;
+  producer_id_internal?: string;
 }
 
 class ScoresRepository implements IScoresRepository {
@@ -42,13 +46,13 @@ class ScoresRepository implements IScoresRepository {
     return score;
   }
 
-  public async findByProducerId(producer_id: string): Promise<Score[]> {
-    const scores = await this.ormRepository.find({
-      where: { producer_id },
-    });
+  // public async findByProducerId(producer_id: string): Promise<Score[]> {
+  //   const scores = await this.ormRepository.find({
+  //     where: { producer_id },
+  //   });
 
-    return scores;
-  }
+  //   return scores;
+  // }
 
   public async findByStatus(status: boolean): Promise<Score[]> {
     const scores = await this.ormRepository.find({

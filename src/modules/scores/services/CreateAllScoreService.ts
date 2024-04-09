@@ -13,10 +13,14 @@ interface IRequest {
   end_date: Date;
   created_at: Date;
   updated_at: Date;
-  producer_id: string;
   type: string;
   nfe: string;
-  farm_id: string;
+  farm_id_sender?: string;
+  farm_id_received?: string;
+  farm_id_internal?: string;
+  producer_id_sender?: string;
+  producer_id_received?: string;
+  producer_id_internal?: string;
 }
 
 @injectable()

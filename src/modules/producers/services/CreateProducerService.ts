@@ -7,6 +7,7 @@ interface IRequest {
   name: string;
   cpf: string;
   internal_code: string;
+  email: string;
 }
 
 @injectable()
@@ -20,11 +21,13 @@ class CreateProducerService {
     name,
     cpf,
     internal_code,
+    email,
   }: IRequest): Promise<Producer> {
     const producer = await this.producersRepository.create({
       name,
       cpf,
       internal_code,
+      email,
     });
 
     return producer;

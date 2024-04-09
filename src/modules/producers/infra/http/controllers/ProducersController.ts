@@ -32,6 +32,7 @@ export default class ProducersController {
       name,
       cpf,
       internal_code,
+      email,
     } = req.body;
 
     const createProducer = container.resolve(CreateProducerService);
@@ -40,6 +41,7 @@ export default class ProducersController {
       name,
       cpf,
       internal_code,
+      email,
     });
 
     return res.json(producer);

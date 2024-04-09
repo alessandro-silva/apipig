@@ -5,6 +5,7 @@ import ListFarmService from '@modules/farms/services/ListFarmService';
 import ShowFarmService from '@modules/farms/services/ShowFarmService';
 import CreateFarmService from '@modules/farms/services/CreateFarmService';
 import UpdateFarmService from '@modules/farms/services/UpdateFarmService';
+import DeleteScoreService from '@modules/scores/services/DeleteScoreService';
 
 export default class FarmsController {
   public async index(req: Request, res: Response): Promise<Response> {
@@ -56,5 +57,15 @@ export default class FarmsController {
     });
 
     return res.json(farm);
+  }
+
+  public async delete(req: Request, res: Response): Promise<Response> {
+    const { id } = req.query;
+
+    const deleteScore = container.resolve(DeleteScoreService);
+
+    const score = await deleteScore.execute(String(id));
+
+    return res.json(score);
   }
 }

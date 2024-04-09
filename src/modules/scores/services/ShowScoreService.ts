@@ -35,11 +35,11 @@ class ShowScoreService {
       return {...scoreMap, duration: { hours,minutes } };
     }
 
-    if (producer_id) {
-      const scores = await this.scoresRepository.findByProducerId(producer_id);
+    // if (producer_id) {
+    //   const scores = await this.scoresRepository.findByProducerId(producer_id);
 
-      return scores;
-    }
+    //   return scores;
+    // }
   }
 }
 

@@ -12,8 +12,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import Marking from '@modules/markings/infra/typeorm/entities/Marking';
 import Farm from '@modules/farms/infra/typeorm/entities/Farm';
+import Producer from '@modules/producers/infra/typeorm/entities/Producer';
+import Marking from '@modules/markings/infra/typeorm/entities/Marking';
 
 @Entity('scores')
 class Score {
@@ -41,21 +42,53 @@ class Score {
   @Column()
   nfe: string;
 
-  @Column()
-  farm_id: string;
-
-  @ManyToOne(() => Farm, { eager: true })
-  @JoinColumn({ name: 'farm_id' })
-  farm: Farm;
-
-  @Column()
-  producer_id: string;
-
   @OneToMany(() => Marking, marking => marking.score, {
     eager: true,
   })
   @JoinTable()
   markings: Marking[];
+
+  @Column()
+  farm_id_sender: string;
+
+  @ManyToOne(() => Farm, { eager: true })
+  @JoinColumn({ name: 'farm_id_sender' })
+  farmSender: Farm;
+
+  @Column()
+  farm_id_received: string;
+
+  @ManyToOne(() => Farm, { eager: true })
+  @JoinColumn({ name: 'farm_id_received' })
+  farmReceived: Farm;
+
+  @Column()
+  farm_id_internal: string;
+
+  @ManyToOne(() => Farm, { eager: true })
+  @JoinColumn({ name: 'farm_id_internal' })
+  farmInternal: Farm;
+
+  @Column()
+  producer_id_sender: string;
+
+  @ManyToOne(() => Producer, { eager: true })
+  @JoinColumn({ name: 'producer_id_sender' })
+  producerSender: Producer;
+
+  @Column()
+  producer_id_received: string;
+
+  @ManyToOne(() => Producer, { eager: true })
+  @JoinColumn({ name: 'producer_id_received' })
+  producerReceived: Producer;
+
+  @Column()
+  producer_id_internal: string;
+
+  @ManyToOne(() => Producer, { eager: true })
+  @JoinColumn({ name: 'producer_id_internal' })
+  producerInternal: Producer;
 
   @Column()
   file: string;
