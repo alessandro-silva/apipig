@@ -4,6 +4,7 @@ import IScoresRepository from '@modules/scores/repositories/IScoresRepository';
 import ICreateScoreDTO from '@modules/scores/dtos/ICreateScoreDTO';
 
 import Score from '@modules/scores/infra/typeorm/entities/Score';
+import IFindAllFilters from '@modules/scores/dtos/IFindAllFiltersDTO';
 
 interface ICreateAll {
   id?: string;
@@ -25,11 +26,90 @@ interface ICreateAll {
   producer_id_internal?: string;
 }
 
+interface IResponseFilters {
+  scores: Score[];
+  pagination: {
+    page: number;
+    take: number;
+    total: number;
+    totalPages: number;
+  };
+}
+
 class ScoresRepository implements IScoresRepository {
   private ormRepository: Repository<Score>;
 
   constructor() {
     this.ormRepository = getRepository(Score);
+  }
+
+  public async findAllFilters({
+    type,
+    farm_id_internal,
+    producer_id_internal,
+    farm_id_received,
+    producer_id_received,
+    farm_id_sender,
+    producer_id_sender,
+    take,
+    page,
+  }: IFindAllFilters): Promise<IResponseFilters> {
+    const scoresQuery = await this.ormRepository
+      .createQueryBuilder('score')
+      .where('1=1')
+      .take(take)
+      .skip(page * take)
+      .orderBy('score.created_at', 'DESC');
+
+    if (type) {
+      scoresQuery.andWhere(
+        "UPPER(score.type) LIKE UPPER('%'||:type||'%' )",
+        {
+          type,
+        },
+      );
+    }
+
+    if (farm_id_internal) {
+      scoresQuery.andWhere('score.farm_id_internal = :farm_id_internal', {
+        farm_id_internal,
+      });
+    }
+
+    if (producer_id_internal) {
+      scoresQuery.andWhere('score.producer_id_internal = :producer_id_internal', {
+        producer_id_internal,
+      });
+    }
+
+    if (farm_id_received) {
+      scoresQuery.andWhere('score.farm_id_received = :farm_id_received', {
+        farm_id_received,
+      });
+    }
+
+    if (producer_id_received) {
+      scoresQuery.andWhere('score.producer_id_received = :producer_id_received', {
+        producer_id_received,
+      });
+    }
+
+    if (farm_id_sender) {
+      scoresQuery.andWhere('score.farm_id_sender = :farm_id_sender', {
+        farm_id_sender,
+      });
+    }
+
+    if (producer_id_sender) {
+      scoresQuery.andWhere('score.producer_id_sender = :producer_id_sender', {
+        producer_id_sender,
+      });
+    }
+
+    const [scores, total] = await scoresQuery.getManyAndCount();
+    const totalPages = Math.ceil(total / take);
+
+    return { scores, pagination: { page, take, total, totalPages } };
   }
 
   public async findAll(): Promise<Score[]> {

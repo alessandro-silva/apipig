@@ -1,3 +1,4 @@
+import IFindAllFilters from '../dtos/IFindAllFiltersDTO';
 import Score from '../infra/typeorm/entities/Score';
 import { DeleteResult } from 'typeorm';
 
@@ -21,7 +22,18 @@ interface ICreateAll {
   producer_id_internal?: string;
 }
 
+interface IResponseFilters {
+  scores: Score[];
+  pagination: {
+    page: number;
+    take: number;
+    total: number;
+    totalPages: number;
+  };
+}
+
 export default interface IScoresRepository {
+  findAllFilters(data: IFindAllFilters): Promise<IResponseFilters>;
   findAll(): Promise<Score[]>;
   findById(id: string): Promise<Score | undefined>;
   // findByProducerId(producer_id: string): Promise<Score[]>;

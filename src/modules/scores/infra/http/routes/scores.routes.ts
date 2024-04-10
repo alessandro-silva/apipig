@@ -11,6 +11,7 @@ scoresRouter.use(ensureAuthenticated);
 
 scoresRouter.get('/', scoresController.index);
 scoresRouter.get('/show', scoresController.show);
+scoresRouter.get('/filter', scoresController.filter);
 scoresRouter.post('/', scoresController.create);
 scoresRouter.post('/createAll', scoresController.createAll);
 scoresRouter.put('/', scoresController.update);

@@ -8,6 +8,7 @@ import CreateScoreService from '@modules/scores/services/CreateScoreService';
 import CreateAllScoreService from '@modules/scores/services/CreateAllScoreService';
 import UpdateScoreService from '@modules/scores/services/UpdateScoreService';
 import DeleteScoreService from '@modules/scores/services/DeleteScoreService';
+import FilterServiceScoreService from '@modules/scores/services/FilterServiceScoreService';
 // import UploadScoreService from '@modules/scores/services/UploadScoreService';
 
 export default class ScoresController {
@@ -95,6 +96,36 @@ export default class ScoresController {
     });
 
     return res.json(score);
+  }
+
+  public async filter(req: Request, res: Response): Promise<Response> {
+    const {
+      type,
+      farm_id_internal,
+      producer_id_internal,
+      farm_id_received,
+      producer_id_received,
+      farm_id_sender,
+      producer_id_sender,
+      take,
+      page,
+    } = req.query;
+
+    const filterServiceScore = container.resolve(FilterServiceScoreService);
+
+    const scores = await filterServiceScore.execute({
+      type: type ? String(type) : undefined,
+      farm_id_internal: farm_id_internal ? String(farm_id_internal) : undefined,
+      producer_id_internal: producer_id_internal ? String(producer_id_internal) : undefined,
+      farm_id_received: farm_id_received ? String(farm_id_received) : undefined,
+      producer_id_received: producer_id_received ? String(producer_id_received) : undefined,
+      farm_id_sender: farm_id_sender ? String(farm_id_sender) : undefined,
+      producer_id_sender: producer_id_sender ? String(producer_id_sender) : undefined,
+      take: Number(take),
+      page: Number(page),
+    });
+
+    return res.json(scores);
   }
 
   public async delete(req: Request, res: Response): Promise<Response> {
