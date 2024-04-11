@@ -59,7 +59,11 @@ class ScoresRepository implements IScoresRepository {
       .where('1=1')
       .take(take)
       .skip(page * take)
-      .orderBy('score.created_at', 'DESC');
+      .orderBy('score.created_at', 'DESC')
+      .leftJoinAndSelect('score.farmSender', 'farmSender')
+      .leftJoinAndSelect('score.farmReceived', 'farmReceived')
+      .leftJoinAndSelect('score.farmInternal', 'farmInternal')
+      .leftJoinAndSelect('score.markings', 'markings');
 
     if (type) {
       scoresQuery.andWhere(
