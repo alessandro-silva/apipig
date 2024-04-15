@@ -26,7 +26,7 @@ class Farm {
   @Column()
   producer_id: string;
 
-  @ManyToOne(() => Producer, { eager: true })
+  @ManyToOne(() => Producer, producer => producer.farms)
   @JoinColumn({ name: 'producer_id' })
   producer: Producer;
 

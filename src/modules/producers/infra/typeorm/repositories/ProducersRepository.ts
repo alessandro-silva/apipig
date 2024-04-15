@@ -12,7 +12,9 @@ class ProducersRepository implements IProducersRepository {
   }
 
   public async findAll(): Promise<Producer[]> {
-    const producers = await this.ormRepository.find();
+    const producers = await this.ormRepository.find({
+      relations: ['farms'],
+    });
 
     return producers;
   }

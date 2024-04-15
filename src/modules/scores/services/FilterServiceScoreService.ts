@@ -3,11 +3,12 @@ import { injectable, inject } from 'tsyringe';
 import IScoresRepository from '../repositories/IScoresRepository';
 
 import IFindAllFilters from '../dtos/IFindAllFiltersDTO';
-import IScoreResponseDTO from '../dtos/IScoreResponseDTO';
-import { ScoreMap } from '../mapper/ScoreMap';
+import Score from '../infra/typeorm/entities/Score';
+// import IScoreResponseDTO from '../dtos/IScoreResponseDTO';
+// import { ScoreMap } from '../mapper/ScoreMap';
 
 interface IResponseFilters {
-  scores: IScoreResponseDTO[];
+  scores: Score[];
   pagination: {
     page: number;
     take: number;
@@ -49,11 +50,11 @@ class FilterServiceScoreService {
       });
 
 
-    const scoresResponse = scores.map(score => {
-      return ScoreMap.toDTO(score);
-    });
+    // const scoresResponse = scores.map(score => {
+    //   return ScoreMap.toDTO(score);
+    // });
 
-    return { scores: scoresResponse, pagination };
+    return { scores, pagination };
   }
 }
 

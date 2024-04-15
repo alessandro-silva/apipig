@@ -42,6 +42,12 @@ class Score {
   @Column()
   nfe: string;
 
+  @Column()
+  name: string;
+
+  @Column()
+  lote: string;
+
   @OneToMany(() => Marking, marking => marking.score, {
     eager: true,
   })
@@ -93,17 +99,20 @@ class Score {
   @Column()
   file: string;
 
-  @Expose({ name: 'file_url' })
-  file_url(): string {
-    switch (process.env.STORAGE_DRIVER) {
-      case 'disk':
-        return `${process.env.APP_API_URL}/scores/file/${this.file}`;
-      case 's3':
-        return `${process.env.AWS_BUCKET_URL}/scores/file/${this.file}`;
-      default:
-        return '';
-    }
-  }
+  @Column()
+  file_url: string;
+
+  // @Expose({ name: 'file_url' })
+  // file_url(): string {
+  //   switch (process.env.STORAGE_DRIVER) {
+  //     case 'disk':
+  //       return `${process.env.APP_API_URL}/scores/file/${this.file}`;
+  //     case 's3':
+  //       return `${process.env.AWS_BUCKET_URL}/scores/file/${this.file}`;
+  //     default:
+  //       return '';
+  //   }
+  // }
 
   @CreateDateColumn()
   created_at: Date;

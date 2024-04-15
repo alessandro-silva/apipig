@@ -19,6 +19,8 @@ interface ICreateAll {
   updated_at: Date;
   type: string;
   nfe: string;
+  name?: string;
+  lote?: string;
   markings?: Marking[];
   farm_id_sender?: string;
   farm_id_received?: string;
@@ -42,7 +44,7 @@ class CreateScoreService {
     const scoreExistent = await this.scoresRepository.findById(data.id);
 
     if (scoreExistent) {
-      throw new AppError('Score already exists.');
+      await this.scoresRepository.delete(scoreExistent.id);
     }
 
     const score = await this.scoresRepository.create(data);
