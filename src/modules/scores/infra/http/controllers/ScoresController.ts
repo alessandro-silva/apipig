@@ -18,6 +18,10 @@ export default class ScoresController {
     return res.json(score);
   }
 
+  public async validate(req: Request, res: Response): Promise<void> {
+    console.log('score/validate');
+  }
+
   public async show(req: Request, res: Response): Promise<Response> {
     const { id, producer_id } = req.query;
 
