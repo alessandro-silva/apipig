@@ -21,6 +21,7 @@ interface ICreateAll {
   nfe: string;
   name?: string;
   lote?: string;
+  file_url?: string;
   markings?: Marking[];
   farm_id_sender?: string;
   farm_id_received?: string;
@@ -28,6 +29,18 @@ interface ICreateAll {
   producer_id_sender?: string;
   producer_id_received?: string;
   producer_id_internal?: string;
+}
+
+interface IStream {
+  app: string,
+  duration: number,
+  nn: number,
+  progress: true,
+  size: number,
+  stream: string,
+  update: string,
+  uuid: string,
+  vhost: string
 }
 
 @injectable()
@@ -45,6 +58,26 @@ class CreateScoreService {
 
     if (scoreExistent) {
       await this.scoresRepository.delete(scoreExistent.id);
+    }
+
+    const scoreRecordFile = await fetch('http://167.71.20.221:82/terraform/v1/hooks/record/files', {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer srs-v2-3a78d2ce88624a8f918a1fb93c388aa7"
+      },
+    }).then(async (response) => {
+      return response.json();
+    }).catch(err => {
+      throw new AppError(err.message)
+    });
+
+    const response = scoreRecordFile.data.filter((response: IStream) => {
+      return response.stream === score.id;
+    })
+
+    if (response.length = 1) {
+      data.file_url = `${process.env.AWS_BUCKET_URL}/${response[0].uuid}.mp4`
     }
 
     const score = await this.scoresRepository.create(data);

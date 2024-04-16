@@ -33,6 +33,7 @@ class FilterServiceScoreService {
     producer_id_received,
     farm_id_sender,
     producer_id_sender,
+    created_at,
     take,
     page,
   }: IFindAllFilters): Promise<IResponseFilters | void> {
@@ -45,6 +46,7 @@ class FilterServiceScoreService {
         producer_id_received,
         farm_id_sender,
         producer_id_sender,
+        created_at,
         take,
         page: page - 1,
       });

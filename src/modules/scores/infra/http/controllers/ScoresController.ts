@@ -100,6 +100,7 @@ export default class ScoresController {
       producer_id_received,
       farm_id_sender,
       producer_id_sender,
+      created_at,
       take,
       page,
     } = req.query;
@@ -114,6 +115,7 @@ export default class ScoresController {
       producer_id_received: producer_id_received ? String(producer_id_received) : undefined,
       farm_id_sender: farm_id_sender ? String(farm_id_sender) : undefined,
       producer_id_sender: producer_id_sender ? String(producer_id_sender) : undefined,
+      created_at: created_at ? String(created_at) : undefined,
       take: Number(take),
       page: Number(page),
     });

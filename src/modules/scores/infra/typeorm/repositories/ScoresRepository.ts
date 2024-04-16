@@ -51,6 +51,7 @@ class ScoresRepository implements IScoresRepository {
     producer_id_received,
     farm_id_sender,
     producer_id_sender,
+    created_at,
     take,
     page,
   }: IFindAllFilters): Promise<IResponseFilters> {
@@ -108,6 +109,15 @@ class ScoresRepository implements IScoresRepository {
       scoresQuery.andWhere('score.producer_id_sender = :producer_id_sender', {
         producer_id_sender,
       });
+    }
+
+    if (created_at) {
+      scoresQuery.andWhere(
+        `to_char(score.created_at, 'DD-MM-YYYY') = :created_at`,
+        {
+          created_at,
+        },
+      );
     }
 
     const [scores, total] = await scoresQuery.getManyAndCount();
