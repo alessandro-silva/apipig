@@ -18,8 +18,10 @@ export default class ScoresController {
     return res.json(score);
   }
 
-  public async validate(req: Request, res: Response): Promise<void> {
+  public async validate(req: Request, res: Response): Promise<Response> {
     console.log('score/validate');
+
+    res.send();
   }
 
   public async show(req: Request, res: Response): Promise<Response> {
