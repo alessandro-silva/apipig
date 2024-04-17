@@ -52,9 +52,9 @@ class CreateScoreService {
 
     @inject('MarkingsRepository')
     private markingsRepository: IMarkingsRepository,
-  ) {}
+  ) { }
 
-  public async execute(data: ICreateAll): Promise<Score> {
+  public async execute(data: ICreateAll): Promise<Score | void> {
     const scoreExistent = await this.scoresRepository.findById(data.id);
 
     if (scoreExistent) {
@@ -74,24 +74,39 @@ class CreateScoreService {
     });
 
     const response = scoreRecordFile.data.filter((response: IStream) => {
-      return response.stream === score.id;
+      return response.stream === data.id;
     })
 
-    if (response.length = 1) {
+    // se happening estava streaming se não not found
+    if (response.length = 1 && data.progress === 'happening') {
       data.file_url = `${process.env.AWS_BUCKET_URL}/${response[0].uuid}.mp4`
-    }
+      data.progress = 'finalized';
 
-    const score = await this.scoresRepository.create(data);
+      const score = await this.scoresRepository.create(data);
 
-    // const markings = await this.markingsRepository.findAllByScoreId(score.id);
+      if (score.markings.length > 0) {
+        await this.markingsRepository.createAll(score.markings);
 
-    if (score.markings.length > 0) {
-      await this.markingsRepository.createAll(score.markings);
+        return score;
+      }
 
       return score;
     }
 
-    return score;
+    if (response.length = 1 && data.progress !== 'finalized') {
+      data.file_url = 'not_found';
+      data.progress = 'not_found';
+
+      const score = await this.scoresRepository.create(data);
+
+      if (score.markings.length > 0) {
+        await this.markingsRepository.createAll(score.markings);
+
+        return score;
+      }
+
+      return score;
+    }
   }
 }
 

@@ -48,7 +48,8 @@ class ValidateScoreService {
           }
 
           if (score.progress === 'happening') {
-            throw new AppError('Score progress happening')
+            // throw new AppError('Score progress happening')
+            return;
           }
 
           score.file_url = `http://167.71.20.221:82/live/${score.id}.flv`
