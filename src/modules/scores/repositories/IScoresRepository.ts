@@ -14,6 +14,7 @@ interface ICreateAll {
   updated_at?: Date;
   type?: string;
   nfe?: string;
+  progress?: string;
   farm_id_sender?: string;
   farm_id_received?: string;
   farm_id_internal?: string;

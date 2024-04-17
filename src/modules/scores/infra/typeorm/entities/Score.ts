@@ -102,6 +102,9 @@ class Score {
   @Column()
   file_url: string;
 
+  @Column()
+  progress: string;
+
   // @Expose({ name: 'file_url' })
   // file_url(): string {
   //   switch (process.env.STORAGE_DRIVER) {

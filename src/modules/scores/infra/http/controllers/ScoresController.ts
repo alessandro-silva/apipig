@@ -8,6 +8,7 @@ import CreateAllScoreService from '@modules/scores/services/CreateAllScoreServic
 import UpdateScoreService from '@modules/scores/services/UpdateScoreService';
 import DeleteScoreService from '@modules/scores/services/DeleteScoreService';
 import FilterServiceScoreService from '@modules/scores/services/FilterServiceScoreService';
+import ValidateScoreService from '@modules/scores/services/ValidateScoreService';
 
 export default class ScoresController {
   public async index(req: Request, res: Response): Promise<Response> {
@@ -19,9 +20,11 @@ export default class ScoresController {
   }
 
   public async validate(req: Request, res: Response): Promise<Response> {
-    console.log('score/validate');
+    const validateScore = container.resolve(ValidateScoreService);
 
-    res.send();
+    const score = await validateScore.execute();
+
+    return res.json(score);
   }
 
   public async show(req: Request, res: Response): Promise<Response> {

@@ -9,6 +9,7 @@ export default interface IScoreResponseDTO {
   nfe: string;
   name?: string;
   lote?: string;
+  progress?: string;
   farm_id_sender?: string;
   farm_id_received?: string;
   farm_id_internal?: string;

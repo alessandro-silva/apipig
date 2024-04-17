@@ -20,6 +20,7 @@ interface ICreateAll {
   type: string;
   nfe: string;
   name?: string;
+  progress?: string;
   lote?: string;
   file_url?: string;
   markings?: Marking[];
@@ -35,7 +36,7 @@ interface IStream {
   app: string,
   duration: number,
   nn: number,
-  progress: true,
+  progress: boolean,
   size: number,
   stream: string,
   update: string,
