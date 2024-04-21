@@ -103,6 +103,7 @@ export default class ScoresController {
   public async filter(req: Request, res: Response): Promise<Response> {
     const {
       type,
+      progress,
       farm_id_internal,
       producer_id_internal,
       farm_id_received,
@@ -118,6 +119,7 @@ export default class ScoresController {
 
     const scores = await filterServiceScore.execute({
       type: type ? String(type) : undefined,
+      progress: progress ? String(progress) : undefined,
       farm_id_internal: farm_id_internal ? String(farm_id_internal) : undefined,
       producer_id_internal: producer_id_internal ? String(producer_id_internal) : undefined,
       farm_id_received: farm_id_received ? String(farm_id_received) : undefined,

@@ -1,5 +1,6 @@
 export default interface IFindAllFilters {
   type?: string;
+  progress?: string;
   producer_id_sender?: string;
   created_at?: string;
   farm_id_sender?: string;

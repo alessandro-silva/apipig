@@ -46,6 +46,7 @@ class ScoresRepository implements IScoresRepository {
 
   public async findAllFilters({
     type,
+    progress,
     farm_id_internal,
     producer_id_internal,
     farm_id_received,
@@ -72,6 +73,15 @@ class ScoresRepository implements IScoresRepository {
         "UPPER(score.type) LIKE UPPER('%'||:type||'%' )",
         {
           type,
+        },
+      );
+    }
+
+    if (progress) {
+      scoresQuery.andWhere(
+        "UPPER(score.progress) LIKE UPPER('%'||:progress||'%' )",
+        {
+          progress,
         },
       );
     }

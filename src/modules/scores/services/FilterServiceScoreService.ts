@@ -27,6 +27,7 @@ class FilterServiceScoreService {
   // eslint-disable-next-line consistent-return
   public async execute({
     type,
+    progress,
     farm_id_internal,
     producer_id_internal,
     farm_id_received,
@@ -40,6 +41,7 @@ class FilterServiceScoreService {
     const { scores, pagination } =
       await this.scoresRepository.findAllFilters({
         type,
+        progress,
         farm_id_internal,
         producer_id_internal,
         farm_id_received,
