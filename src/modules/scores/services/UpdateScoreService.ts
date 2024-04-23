@@ -23,17 +23,17 @@ interface IRequest {
   producer_id_internal?: string;
 }
 
-// interface IStream {
-//   app: string,
-//   duration: number,
-//   nn: number,
-//   progress: true,
-//   size: number,
-//   stream: string,
-//   update: string,
-//   uuid: string,
-//   vhost: string
-// }
+interface IStream {
+  app: string,
+  duration: number,
+  nn: number,
+  progress: true,
+  size: number,
+  stream: string,
+  update: string,
+  uuid: string,
+  vhost: string
+}
 
 @injectable()
 class UpdateScoreService {
@@ -129,25 +129,48 @@ class UpdateScoreService {
     if (end_date) {
       score.end_date = end_date;
 
-      // const scoreRecordFile = await fetch('http://167.71.20.221:82/terraform/v1/hooks/record/files', {
-      //   method: 'GET',
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     "Authorization": "Bearer srs-v2-3a78d2ce88624a8f918a1fb93c388aa7"
-      //   },
-      // }).then(async (response) => {
-      //   return response.json();
-      // }).catch(err => {
-      //   throw new AppError(err.message)
-      // });
+      const scoreRecordFile = await fetch('http://167.71.20.221:82/terraform/v1/hooks/record/files', {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer srs-v2-3a78d2ce88624a8f918a1fb93c388aa7"
+        },
+      }).then(async (response) => {
+        return response.json();
+      }).catch(err => {
+        throw new AppError(err.message)
+      });
 
-      // const response = scoreRecordFile.data.filter((response: IStream) => {
-      //   return response.stream === score.id;
-      // })
+      const response = scoreRecordFile.data.filter((response: IStream) => {
+        return response.stream === score.id;
+      })
 
-      // if (response.length = 1) {
-      //   score.file_url = `${process.env.AWS_BUCKET_URL}/${response[0].uuid}.mp4`
-      // }
+      if (response.length = 1 && score.progress === 'happening') {
+        score.file_url = `${process.env.AWS_BUCKET_URL}/${response[0].uuid}.mp4`
+        score.progress = 'finalized';
+
+        const scoreSaved = await this.scoresRepository.save(score);
+
+        // if (score.markings.length > 0) {
+        //   await this.markingsRepository.createAll(score.markings);
+
+        //   return score;
+        // }
+
+        await fetch(`http://167.71.20.221:82/mgmt/en/routers-scenario?tab=record#${response[0].uuid}`, {
+          method: 'GET',
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer srs-v2-3a78d2ce88624a8f918a1fb93c388aa7"
+          },
+        }).then(async (response) => {
+          return response.json();
+        }).catch(err => {
+          throw new AppError(err.message)
+        });
+
+        return scoreSaved;
+      }
     }
 
     return this.scoresRepository.save(score);

@@ -11,7 +11,6 @@ interface ICreateAll {
   id: string;
   quantity: number;
   weight: string;
-  file: string;
   status: boolean;
   start_date: Date;
   end_date: Date;
@@ -89,6 +88,18 @@ class CreateScoreService {
 
         return score;
       }
+
+      await fetch(`http://167.71.20.221:82/mgmt/en/routers-scenario?tab=record#${response[0].uuid}`, {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer srs-v2-3a78d2ce88624a8f918a1fb93c388aa7"
+        },
+      }).then(async (response) => {
+        return response.json();
+      }).catch(err => {
+        throw new AppError(err.message)
+      });
 
       return score;
     }
