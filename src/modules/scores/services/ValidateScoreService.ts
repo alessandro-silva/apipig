@@ -47,7 +47,7 @@ class ValidateScoreService {
             throw new AppError('Score does not exists.')
           }
 
-          if (score.progress === 'happening') {
+          if (score.progress === 'happening' || score.progress === 'finalized') {
             // throw new AppError('Score progress happening')
             return;
           }
@@ -55,9 +55,9 @@ class ValidateScoreService {
           score.file_url = `http://167.71.20.221:82/live/${score.id}.flv`
           score.progress = 'happening';
 
-          const scoreSaved = await this.scoresRepository.save(score);
+          await this.scoresRepository.save(score);
 
-          return scoreSaved
+          return { scoreHappening: true }
         })
       );
 
