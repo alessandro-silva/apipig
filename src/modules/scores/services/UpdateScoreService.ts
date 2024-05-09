@@ -145,7 +145,9 @@ class UpdateScoreService {
         return response.stream === score.id;
       })
 
-      if (response.length = 1 && score.progress === 'happening') {
+      console.log('response', response)
+
+      if (response.length > 0 && score.progress === 'happening') {
         score.file_url = `${process.env.AWS_BUCKET_URL}/${response[0].uuid}.mp4`
         score.progress = 'finalized';
 
@@ -172,6 +174,7 @@ class UpdateScoreService {
 
         return scoreSaved;
       }
+
     }
 
     return this.scoresRepository.save(score);
