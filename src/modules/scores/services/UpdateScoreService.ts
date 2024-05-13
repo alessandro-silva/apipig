@@ -151,6 +151,8 @@ class UpdateScoreService {
         score.file_url = `${process.env.AWS_BUCKET_URL}/${response[0].uuid}.mp4`
         score.progress = 'finalized';
 
+        console.log('finalized', score.progress)
+
         const scoreSaved = await this.scoresRepository.save(score);
 
         // if (score.markings.length > 0) {
@@ -159,7 +161,7 @@ class UpdateScoreService {
         //   return score;
         // }
 
-        await fetch(`http://167.71.20.221:82/terraform/v1/hooks/record/end`, {
+        const finalized = await fetch(`http://167.71.20.221:82/terraform/v1/hooks/record/end`, {
           method: 'POST',
           headers: {
             "Content-Type": "application/json",
@@ -171,6 +173,8 @@ class UpdateScoreService {
         }).catch(err => {
           throw new AppError(err.message)
         });
+
+        console.log('finalizedRecord', finalized)
 
         return scoreSaved;
       }
