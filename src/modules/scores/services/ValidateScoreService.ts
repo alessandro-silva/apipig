@@ -24,7 +24,7 @@ class ValidateScoreService {
 
   public async execute(): Promise<any | void> {
     let retries = 0;
-    const maxRetries = 6;
+    const maxRetries = 12;
 
     while (retries < maxRetries) {
       try {
