@@ -23,45 +23,60 @@ class ValidateScoreService {
   ) { }
 
   public async execute(): Promise<any | void> {
-    const records = await fetch('http://167.71.20.221:82/terraform/v1/hooks/record/files', {
-      method: 'GET',
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer srs-v2-3a78d2ce88624a8f918a1fb93c388aa7"
-      },
-    }).then(async (response) => {
-      return response.json();
-    }).catch(err => {
-      throw new AppError(err.message)
-    });
+    let retries = 0;
+    const maxRetries = 3;
 
-    const recordsTrue: IStream[] = records.data.filter((record: IStream) => record.progress === true);
+    while (retries < maxRetries) {
+      try {
+        const records = await fetch('http://167.71.20.221:82/terraform/v1/hooks/record/files', {
+          method: 'GET',
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer srs-v2-3a78d2ce88624a8f918a1fb93c388aa7"
+          },
+        }).then(async (response) => {
+          return response.json();
+        }).catch(err => {
+          throw new AppError(err.message)
+        });
 
-    if (recordsTrue.length > 0) {
-      const scoresWithLinkStream = await Promise.all(
-        recordsTrue.map(async record => {
+        const recordsTrue: IStream[] = records.data.filter((record: IStream) => record.progress === true);
 
-          const score = await this.scoresRepository.findById(record.stream);
+        if (recordsTrue.length > 0) {
+          const scoresWithLinkStream = await Promise.all(
+            recordsTrue.map(async record => {
 
-          if (!score) {
-            throw new AppError('Score does not exists.')
-          }
+              const score = await this.scoresRepository.findById(record.stream);
 
-          if (score.progress === 'happening' || score.progress === 'finalized') {
-            // throw new AppError('Score progress happening')
-            return;
-          }
+              if (!score) {
+                throw new AppError('Score does not exists.')
+              }
 
-          score.file_url = `http://167.71.20.221:82/live/${score.id}.flv`
-          score.progress = 'happening';
+              if (score.progress === 'happening' || score.progress === 'finalized') {
+                // throw new AppError('Score progress happening')
+                return;
+              }
 
-          await this.scoresRepository.save(score);
+              score.file_url = `http://167.71.20.221:82/live/${score.id}.flv`
+              score.progress = 'happening';
 
-          return { scoreHappening: true }
-        })
-      );
+              await this.scoresRepository.save(score);
 
-      return scoresWithLinkStream
+              return { scoreHappening: true }
+            })
+          );
+
+          return scoresWithLinkStream
+        }
+
+      } catch (error: any) {
+        console.error(error.message);
+      }
+
+      retries++;
+      if (retries < maxRetries) {
+        await new Promise(resolve => setTimeout(resolve, 5000)); // Espera 5 segundos antes de tentar novamente
+      }
     }
 
     return;
