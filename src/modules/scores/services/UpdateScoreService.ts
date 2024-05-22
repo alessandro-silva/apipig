@@ -15,6 +15,8 @@ interface IRequest {
   nfe?: string;
   name?: string;
   lote?: string;
+  female?: string;
+  male?: string;
   farm_id_sender?: string;
   farm_id_received?: string;
   farm_id_internal?: string;
@@ -53,6 +55,8 @@ class UpdateScoreService {
     lote,
     nfe,
     type,
+    female,
+    male,
     farm_id_internal,
     farm_id_received,
     farm_id_sender,
@@ -100,6 +104,14 @@ class UpdateScoreService {
 
     if (type) {
       score.type = type;
+    }
+
+    if (female) {
+      score.female = female;
+    }
+
+    if (male) {
+      score.male = male;
     }
 
     if (farm_id_internal) {

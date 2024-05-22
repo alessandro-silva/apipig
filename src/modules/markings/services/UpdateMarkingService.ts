@@ -10,6 +10,7 @@ interface IRequest {
   weight?: string;
   score_id?: string;
   sequence?: number;
+  gender?: string;
 }
 
 @injectable()
@@ -25,6 +26,7 @@ class UpdateMarkingService {
     weight,
     score_id,
     sequence,
+    gender,
   }: IRequest): Promise<Marking> {
     const marking = await this.markingsRepository.findById(id);
 
@@ -46,6 +48,10 @@ class UpdateMarkingService {
 
     if (sequence) {
       marking.sequence = sequence;
+    }
+
+    if (gender) {
+      marking.gender = gender;
     }
 
     return this.markingsRepository.save(marking);

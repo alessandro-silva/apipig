@@ -24,6 +24,9 @@ class Marking {
   sequence: number;
 
   @Column()
+  gender: string;
+
+  @Column()
   score_id: string;
 
   @ManyToOne(() => Score, score => score.markings)

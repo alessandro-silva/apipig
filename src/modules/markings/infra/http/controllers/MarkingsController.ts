@@ -46,8 +46,6 @@ export default class MarkingsController {
   }
 
   public async createAll(req: Request, res: Response): Promise<Response> {
-    // const { quantity, weight, score_id } = req.body;
-
     const createAllMarking = container.resolve(CreateAllMarkingService);
 
     const markings = await createAllMarking.execute(req.body);
@@ -57,7 +55,7 @@ export default class MarkingsController {
 
   public async update(req: Request, res: Response): Promise<Response> {
     const { id } = req.query;
-    const { quantity, weight, score_id, sequence } = req.body;
+    const { quantity, weight, score_id, sequence, gender } = req.body;
 
     const updateMarking = container.resolve(UpdateMarkingService);
 
@@ -67,6 +65,7 @@ export default class MarkingsController {
       weight,
       score_id,
       sequence,
+      gender,
     });
 
     return res.json(marking);

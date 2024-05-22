@@ -1,5 +1,4 @@
 import Marking from '../infra/typeorm/entities/Marking';
-import ICreateMarkingDTO from '../dtos/ICreateMarkingDTO';
 
 export default interface IMarkingsRepository {
   findAll(): Promise<Marking[]>;

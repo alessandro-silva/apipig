@@ -1,7 +1,6 @@
 import { getRepository, Repository } from 'typeorm';
 
 import IMarkingsRepository from '@modules/markings/repositories/IMarkingsRepository';
-import ICreateMarkingDTO from '@modules/markings/dtos/ICreateMarkingDTO';
 import Marking from '@modules/markings/infra/typeorm/entities/Marking';
 
 class MarkingsRepository implements IMarkingsRepository {

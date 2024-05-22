@@ -20,6 +20,8 @@ interface ICreateAll {
   nfe: string;
   name?: string;
   progress?: string;
+  female?: string;
+  male?: string;
   lote?: string;
   file_url?: string;
   markings?: Marking[];

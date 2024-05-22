@@ -105,6 +105,12 @@ class Score {
   @Column()
   progress: string;
 
+  @Column()
+  female: string;
+
+  @Column()
+  male: string;
+
   // @Expose({ name: 'file_url' })
   // file_url(): string {
   //   switch (process.env.STORAGE_DRIVER) {
