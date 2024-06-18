@@ -17,6 +17,7 @@ interface IRequest {
   lote?: string;
   female?: string;
   male?: string;
+  gta?: string;
   farm_id_sender?: string;
   farm_id_received?: string;
   farm_id_internal?: string;
@@ -57,6 +58,7 @@ class UpdateScoreService {
     type,
     female,
     male,
+    gta,
     farm_id_internal,
     farm_id_received,
     farm_id_sender,
@@ -112,6 +114,10 @@ class UpdateScoreService {
 
     if (male) {
       score.male = male;
+    }
+
+    if (gta) {
+      score.gta = gta;
     }
 
     if (farm_id_internal) {

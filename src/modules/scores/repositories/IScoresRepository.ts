@@ -1,20 +1,27 @@
+import Marking from '@modules/markings/infra/typeorm/entities/Marking';
 import IFindAllFilters from '../dtos/IFindAllFiltersDTO';
 import Score from '../infra/typeorm/entities/Score';
 import { DeleteResult } from 'typeorm';
 
 interface ICreateAll {
-  id?: string;
-  quantity?: number;
-  weight?: string;
-  file?: string;
-  status?: boolean;
-  start_date?: Date;
-  end_date?: Date;
-  created_at?: Date;
-  updated_at?: Date;
-  type?: string;
-  nfe?: string;
+  id: string;
+  quantity: number;
+  weight: string;
+  status: boolean;
+  start_date: Date;
+  end_date: Date;
+  created_at: Date;
+  updated_at: Date;
+  type: string;
+  nfe: string;
+  name?: string;
   progress?: string;
+  female?: string;
+  male?: string;
+  gta?: string;
+  lote?: string;
+  file_url?: string;
+  markings?: Marking[];
   farm_id_sender?: string;
   farm_id_received?: string;
   farm_id_internal?: string;

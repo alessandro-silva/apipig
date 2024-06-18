@@ -22,6 +22,7 @@ interface ICreateAll {
   progress?: string;
   female?: string;
   male?: string;
+  gta?: string;
   lote?: string;
   file_url?: string;
   markings?: Marking[];

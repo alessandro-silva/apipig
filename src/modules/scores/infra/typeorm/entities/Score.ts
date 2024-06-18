@@ -111,6 +111,9 @@ class Score {
   @Column()
   male: string;
 
+  @Column()
+  gta: string;
+
   // @Expose({ name: 'file_url' })
   // file_url(): string {
   //   switch (process.env.STORAGE_DRIVER) {

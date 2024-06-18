@@ -11,6 +11,7 @@ export default interface ICreateScoreDTO {
   progress?: string;
   female?: string;
   male?: string;
+  gta?: string;
   farm_id_sender?: string;
   farm_id_received?: string;
   farm_id_internal?: string;
