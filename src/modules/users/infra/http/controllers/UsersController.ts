@@ -34,6 +34,7 @@ export default class UsersController {
       name,
       cpf,
       internal_code,
+      email,
     } = req.body;
 
     const createUser = container.resolve(CreateUserService);
@@ -42,6 +43,7 @@ export default class UsersController {
       name,
       cpf,
       internal_code,
+      email,
     });
 
     return res.json(user);

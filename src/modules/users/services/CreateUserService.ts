@@ -8,8 +8,9 @@ import User from '../infra/typeorm/entities/User';
 
 interface IRequest {
   name: string;
-  cpf: string;
+  cpf?: string;
   internal_code: string;
+  email: string;
 }
 
 // @inject('HashProvider')
@@ -26,6 +27,7 @@ class CreateUserService {
     name,
     cpf,
     internal_code,
+    email,
   }: IRequest): Promise<User> {
     // const hashedPassword = await this.hashProvider.generateHash(internal_code);
 
@@ -33,6 +35,7 @@ class CreateUserService {
       name,
       cpf,
       internal_code,
+      email,
     });
 
     return user;

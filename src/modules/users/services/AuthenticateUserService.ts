@@ -11,7 +11,7 @@ import IUsersTokensRepository from '../repositories/IUsersTokensRepository';
 import User from '../infra/typeorm/entities/User';
 
 interface IRequest {
-  cpf: string;
+  email: string;
 }
 
 interface IResponse {
@@ -30,8 +30,8 @@ class AuthenticateUserService {
     private usersTokensRepository: IUsersTokensRepository,
   ) {}
 
-  public async execute({ cpf }: IRequest): Promise<IResponse> {
-    const user = await this.usersRepository.findByCpf(cpf);
+  public async execute({ email }: IRequest): Promise<IResponse> {
+    const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
       throw new AppError('Incorrect nickname/password combination.', 401);

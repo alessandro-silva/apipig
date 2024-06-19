@@ -20,6 +20,9 @@ class User {
   @Column()
   internal_code: string;
 
+  @Column()
+  email: string;
+
   @CreateDateColumn()
   created_at: Date;
 
