@@ -10,7 +10,7 @@ const usersRouter = Router();
 
 usersRouter.get('/',ensureAuthenticated, usersController.index);
 
-// usersRouter.get('/show', usersController.show);
+usersRouter.get('/show', usersController.show);
 
 usersRouter.post('/', usersController.create);
 

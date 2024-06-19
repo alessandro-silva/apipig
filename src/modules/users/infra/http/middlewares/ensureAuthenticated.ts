@@ -96,6 +96,10 @@ export default async function ensureAuthenticated(
         message: 'Token Invalid.',
       });
 
-    return response.status(401).json({ message: 'Token Flopado' });
+    return response.status(401).json({
+      error: true,
+      code: 'token.flopado',
+      message: 'Token Flopado'
+    });
   }
 }

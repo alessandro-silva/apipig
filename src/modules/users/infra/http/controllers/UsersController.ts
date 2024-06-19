@@ -3,7 +3,7 @@ import { container } from 'tsyringe';
 // import { classToClass } from 'class-transformer';
 
 import ListUserService from '@modules/users/services/ListUserService';
-// import ShowAccessService from '@modules/users/services/ShowAccessService';
+import ShowUserService from '@modules/users/services/ShowUserService';
 import CreateUserService from '@modules/users/services/CreateUserService';
 // import UpdateAccessService from '@modules/users/services/UpdateAccessService';
 
@@ -16,18 +16,17 @@ export default class UsersController {
     return res.json(users);
   }
 
-  // public async show(req: Request, res: Response): Promise<Response> {
-  //   const { access_id, sector_id } = req.query;
+  public async show(req: Request, res: Response): Promise<Response> {
+    const { id } = req.query;
 
-  //   const showAccess = container.resolve(ShowAccessService);
+    const showUser = container.resolve(ShowUserService);
 
-  //   const user = await showAccess.execute({
-  //     access_id: access_id ? String(access_id) : undefined,
-  //     sector_id: sector_id ? String(sector_id) : undefined,
-  //   });
+    const user = await showUser.execute({
+      id: String(id),
+    });
 
-  //   return res.json(user);
-  // }
+    return res.json(user);
+  }
 
   public async create(req: Request, res: Response): Promise<Response> {
     const {
